@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from modules.dashboard import dashboard_page
 from modules.liabilities import liabilities_page
 from modules.investments import investments_page
@@ -9,9 +10,13 @@ from modules.loans.car_loan import car_loan_page
 from modules.loans.plot_loan import plot_loan_page
 from modules.loans.overdraft import overdraft_page
 from modules.summary import summary_page
-import pandas as pd
+from modules.utils import load_data, save_data  # Import from utils
 
-# Load data from CSV files (or Google Drive)
+# Initialize session state variables
+if 'liabilities_data' not in st.session_state:
+    load_data()
+
+
 def load_data():
     try:
         st.session_state.liabilities_data = pd.read_csv('liabilities.csv')
@@ -22,14 +27,6 @@ def load_data():
         ])
 
     try:
-        st.session_state.investments_data = pd.read_csv('investments.csv')
-    except FileNotFoundError:
-        st.session_state.investments_data = pd.DataFrame(columns=[
-            'Investment Type', 'Asset', 'Initial Amount', 'Current Value',
-            'Expected Return', 'Deadline', 'Transaction Date', 'Remark'
-        ])
-
-    try:
         st.session_state.loans_data = pd.read_csv('loans.csv')
     except FileNotFoundError:
         st.session_state.loans_data = pd.DataFrame(columns=[
@@ -37,10 +34,8 @@ def load_data():
             'Interest Type', 'Duration', 'Deadline', 'Transaction Date', 'Remark'
         ])
 
-# Save data to CSV files
 def save_data():
     st.session_state.liabilities_data.to_csv('liabilities.csv', index=False)
-    st.session_state.investments_data.to_csv('investments.csv', index=False)
     st.session_state.loans_data.to_csv('loans.csv', index=False)
 
 # Initialize session state variables

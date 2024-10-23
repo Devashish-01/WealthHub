@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from modules.utils import save_data  # Import the function
 
 def liabilities_page():
     st.title("Manage Liabilities")
@@ -21,7 +22,7 @@ def liabilities_page():
                                      columns=st.session_state.liabilities_data.columns)
             st.session_state.liabilities_data = pd.concat([st.session_state.liabilities_data, new_entry], ignore_index=True)
             st.success("Liability added successfully!")
-            save_data()
+            save_data()  # Now it should work
 
     st.subheader("Current Liabilities")
     st.data_editor(st.session_state.liabilities_data, height=300)
