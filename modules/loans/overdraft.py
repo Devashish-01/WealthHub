@@ -11,6 +11,7 @@ def overdraft_page():
         amount = st.number_input("Loan Amount", min_value=0.0, step=0.01)
         interest_rate = st.number_input("Interest Rate (%)", min_value=0.0, step=0.01)
         interest_type = st.selectbox("Interest Type", ["Simple", "Compound"])
+        transaction_date = st.date_input("Transaction Date")
         duration = st.number_input("Duration (in months)", min_value=1, step=1)
         deadline = st.date_input("Loan Deadline")
         overdraft_limit = st.number_input("Overdraft Limit", min_value=0.0, step=0.01)
@@ -24,6 +25,7 @@ def overdraft_page():
                 'Amount': amount,
                 'Interest Rate': interest_rate,
                 'Interest Type': interest_type,
+                'Transaction Date': transaction_date,
                 'Duration': duration,
                 'Deadline': deadline,
                 'Overdraft Limit': overdraft_limit,

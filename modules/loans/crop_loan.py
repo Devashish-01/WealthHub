@@ -8,6 +8,7 @@ def crop_loan_page():
         st.subheader("Add Crop Loan")
 
         bank_contractor = st.text_input("Bank/Contractor", placeholder="Enter bank or contractor name")
+        transaction_date = st.date_input("Transaction Date")
         amount = st.number_input("Loan Amount", min_value=0.0, step=0.01)
         interest_rate = st.number_input("Interest Rate (%)", min_value=0.0, step=0.01)
         interest_type = st.selectbox("Interest Type", ["Simple", "Compound"])
@@ -24,6 +25,7 @@ def crop_loan_page():
                 'Amount': amount,
                 'Interest Rate': interest_rate,
                 'Interest Type': interest_type,
+                'Transaction Date': transaction_date,
                 'Duration': duration,
                 'Deadline': deadline,
                 'Crop Type': crop_type,

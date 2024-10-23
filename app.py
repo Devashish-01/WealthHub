@@ -11,24 +11,44 @@ from modules.loans.overdraft import overdraft_page
 from modules.summary import summary_page
 import pandas as pd
 
-# Initialize session state variables if not already set
+# Load data from CSV files (or Google Drive)
+def load_data():
+    try:
+        st.session_state.liabilities_data = pd.read_csv('liabilities.csv')
+    except FileNotFoundError:
+        st.session_state.liabilities_data = pd.DataFrame(columns=[
+            'Type', 'Lender', 'Amount', 'Interest Rate', 'Duration', 
+            'Deadline', 'Transaction Date', 'Remark'
+        ])
+
+    try:
+        st.session_state.investments_data = pd.read_csv('investments.csv')
+    except FileNotFoundError:
+        st.session_state.investments_data = pd.DataFrame(columns=[
+            'Investment Type', 'Asset', 'Initial Amount', 'Current Value',
+            'Expected Return', 'Deadline', 'Transaction Date', 'Remark'
+        ])
+
+    try:
+        st.session_state.loans_data = pd.read_csv('loans.csv')
+    except FileNotFoundError:
+        st.session_state.loans_data = pd.DataFrame(columns=[
+            'Loan Type', 'Bank/Contractor', 'Amount', 'Interest Rate', 
+            'Interest Type', 'Duration', 'Deadline', 'Transaction Date', 'Remark'
+        ])
+
+# Save data to CSV files
+def save_data():
+    st.session_state.liabilities_data.to_csv('liabilities.csv', index=False)
+    st.session_state.investments_data.to_csv('investments.csv', index=False)
+    st.session_state.loans_data.to_csv('loans.csv', index=False)
+
+# Initialize session state variables
 if 'liabilities_data' not in st.session_state:
-    st.session_state.liabilities_data = pd.DataFrame(columns=[
-        'Type', 'Lender', 'Amount', 'Interest Rate', 'Duration', 'Deadline', 'Remark'
-    ])
-
-if 'investments_data' not in st.session_state:
-    st.session_state.investments_data = pd.DataFrame(columns=[
-        'Investment Type', 'Asset', 'Initial Amount', 'Current Value', 'Expected Return', 'Deadline', 'Remark'
-    ])
-
-if 'loans_data' not in st.session_state:
-    st.session_state.loans_data = pd.DataFrame(columns=[
-        'Loan Type', 'Bank/Contractor', 'Amount', 'Interest Rate', 'Interest Type', 'Duration', 'Deadline', 'Remark'
-    ])
+    load_data()
 
 # Sidebar navigation
-st.sidebar.title("Financial Management Tool")
+st.sidebar.title("WealthHub")
 page = st.sidebar.selectbox("Navigate", ["Dashboard", "Liabilities", "Investments", "Loans", "Summary"])
 
 if page == "Dashboard":
@@ -53,3 +73,6 @@ elif page == "Loans":
         overdraft_page()
 elif page == "Summary":
     summary_page()
+
+# Save data before exiting
+save_data()

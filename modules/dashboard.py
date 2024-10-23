@@ -4,35 +4,43 @@ import pandas as pd
 def dashboard_page():
     st.title("Dashboard Overview")
 
-    # Calculate total liabilities and investments
-    total_liabilities = st.session_state.get('total_liabilities', 0)
-    total_investments = st.session_state.get('total_investments', 0)
-    total_profit = total_investments - total_liabilities
+    # Calculate totals
+    total_liabilities = st.session_state.liabilities_data['Amount'].sum()
+    total_investments = st.session_state.investments_data['Current Value'].sum()
+    total_loans = st.session_state.loans_data['Amount'].sum()
 
-    # Display key statistics
+    # Calculate monthly interest
+    monthly_interest = calculate_monthly_interest()
+
+    # Calculate outstanding per month
+    monthly_outstanding = calculate_monthly_outstanding()
+
+    # Display metrics
     st.metric("Total Liabilities", f"₹{total_liabilities}")
     st.metric("Total Investments", f"₹{total_investments}")
-    st.metric("Profit/Loss", f"₹{total_profit}")
+    st.metric("Total Loans", f"₹{total_loans}")
+    st.metric("Monthly Interest", f"₹{monthly_interest}")
+    st.metric("Monthly Outstanding", f"₹{monthly_outstanding}")
 
-    # Find the nearest deadline from liabilities or loans
-    nearest_deadline = None
-    if 'liabilities_data' in st.session_state:
-        nearest_liability = st.session_state.liabilities_data['Deadline'].min() if not st.session_state.liabilities_data.empty else None
-        nearest_deadline = nearest_liability
-
-    if 'loans_data' in st.session_state:
-        nearest_loan = st.session_state.loans_data['Deadline'].min() if not st.session_state.loans_data.empty else None
-        if nearest_deadline:
-            nearest_deadline = min(nearest_deadline, nearest_loan)
-        else:
-            nearest_deadline = nearest_loan
-
+    # Nearest deadline alert
+    nearest_deadline = get_nearest_deadline()
     if nearest_deadline:
         st.warning(f"Nearest Deadline: {nearest_deadline}")
 
-    # Visualization placeholder
-    st.subheader("Visualization of Liabilities vs. Investments")
-    st.bar_chart(pd.DataFrame({
-        'Liabilities': [total_liabilities],
-        'Investments': [total_investments]
-    }))
+def calculate_monthly_interest():
+    # Calculate interest per month for liabilities and loans
+    liabilities_interest = (st.session_state.liabilities_data['Amount'] * st.session_state.liabilities_data['Interest Rate'] / 12).sum() / 100
+    loans_interest = (st.session_state.loans_data['Amount'] * st.session_state.loans_data['Interest Rate'] / 12).sum() / 100
+    return liabilities_interest + loans_interest
+
+def calculate_monthly_outstanding():
+    # Calculate total outstanding per month (liabilities + loans)
+    total_duration = (st.session_state.liabilities_data['Duration'].sum() + st.session_state.loans_data['Duration'].sum())
+    return (st.session_state.liabilities_data['Amount'].sum() + st.session_state.loans_data['Amount'].sum()) / max(1, total_duration)
+
+def get_nearest_deadline():
+    deadlines = pd.concat([
+        st.session_state.liabilities_data['Deadline'],
+        st.session_state.loans_data['Deadline']
+    ])
+    return deadlines.min() if not deadlines.empty else None
