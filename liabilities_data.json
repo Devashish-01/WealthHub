@@ -1,0 +1,80 @@
+{
+    "liabilities": {
+        "anupam": {
+            "active": true,
+            "active_no_of_loan": 2,
+            "loans": {
+                "1": {
+                    "active": true,
+                    "transaction_date": "2021-09-24",
+                    "date_of_data_entry": "2024-11-23",
+                    "main_principle": 120000.0,
+                    "current_principle": 120000.0,
+                    "interest_rate": 1.2,
+                    "interest_payment_interval_months": 60.0,
+                    "deadline_months": 70.0,
+                    "Interest_accumulated_till_today": [
+                        37.96666666666667,
+                        54672.0
+                    ],
+                    "remark": "ok",
+                    "upcoming_emi_list": [
+                        {
+                            "date": "2021-09-24",
+                            "amount": 86400.0,
+                            "done": false,
+                            "lender_name": "anupam",
+                            "id": 1,
+                            "remark": []
+                        },
+                        {
+                            "date": "2026-09-24",
+                            "amount": 86400.0,
+                            "done": false,
+                            "lender_name": "anupam",
+                            "id": 1,
+                            "remark": []
+                        }
+                    ],
+                    "repayment_list": {}
+                },
+                "2": {
+                    "active": true,
+                    "transaction_date": "2021-09-24",
+                    "date_of_data_entry": "2024-11-23",
+                    "main_principle": 120000.0,
+                    "current_principle": 120000.0,
+                    "interest_rate": 1.2,
+                    "interest_payment_interval_months": 60.0,
+                    "deadline_months": 70.0,
+                    "Interest_accumulated_till_today": [
+                        37.96666666666667,
+                        54672.0
+                    ],
+                    "remark": "ok",
+                    "upcoming_emi_list": [
+                        {
+                            "date": "2021-09-24",
+                            "amount": 86400.0,
+                            "done": false,
+                            "lender_name": "anupam",
+                            "id": 2,
+                            "remark": []
+                        },
+                        {
+                            "date": "2026-09-24",
+                            "amount": 86400.0,
+                            "done": false,
+                            "lender_name": "anupam",
+                            "id": 2,
+                            "remark": []
+                        }
+                    ],
+                    "repayment_list": {}
+                }
+            },
+            "total_liabilities": 240000.0,
+            "emi_list": {}
+        }
+    }
+}
